@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аника: 61 год Выдержки</title>
+    <style>
+        :root {
+            --primary: #ff00cc;
+            --secondary: #3333ff;
+            --accent: #00ffcc;
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --card: #1f1f1f;
+            --font: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* КРУТЫЕ ЗАГОЛОВКИ */
+        h1, h2 {
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, #ff00cc, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 0, 204, 0.5);
+            margin-bottom: 10px;
+        }
+
+        /* КНОПКИ */
+        .btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff00cc, #3333ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 0 30px #ff00cc;
+        }
+
+        /* МУЗЫКАЛЬНАЯ КНОПКА */
+        .music-btn {
+            background: linear-gradient(45deg, #00ffcc, #3333ff);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 255, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* СЕКЦИИ */
+        section {
+            padding: 60px 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        /* ВИДЕО */
+        .video-box {
+            border: 4px solid var(--accent);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.2);
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+        }
+        video { width: 100%; display: block; }
+
+        /* ТЕСТ УМА */
+        .quiz-container {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px dashed var(--primary);
+        }
+        .question { font-size: 1.5rem; margin-bottom: 20px; }
+        .quiz-options button {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            background: #333;
+            border: 1px solid #555;
+        }
+        .quiz-options button:hover { background: var(--accent); color: #000; }
+
+        /* ПРИКОЛЫ */
+        .funny-text {
+            color: #888;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .creator {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* АНИМАЦИИ */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 3s ease-in-out infinite; }
+        
+        #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+    
+    <!-- АУДИО ПЛЕЕР (Скрытый) -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <section style="min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 50px;">
+        <h1 class="floating">С ДР, АНИКА!</h1>
+        <h2 style="color: var(--accent);">LEVEL 61 UNLOCKED 🔓</h2>
+        
+        <!-- КНОПКА МУЗЫКИ -->
+        <button class="btn music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 ВРУБИТЬ МУЗОН</button>
+
+        <p style="font-size: 1.2rem; max-width: 600px; text-align: center; margin-top: 30px;">
+            Поздравляем! Вы успешно продлили подписку на жизнь еще на год. 
+            Бонусы уровня: мудрость +100, скорость вставания с дивана -50.
+        </p>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="scrollToVideo()">🎬 СМОТРЕТЬ КИНО</button>
+            <button class="btn" style="background: #444;" onclick="scrollToQuiz()">🧠 ТЕСТ: ТЫ В ТРЕНДЕ?</button>
+        </div>
+    </section>
+
+    <!-- ВИДЕО -->
+    <section id="video-sec">
+        <h2>🎥 Секретный архив</h2>
+        <div class="video-box">
+            <video controls>
+                <source src="аника.mp4" type="video/mp4">
+                Эй, браузер старый, как мамонт! Обновись, видео не работает.
+            </video>
+        </div>
+        <p class="funny-text">Внимание: Контент содержит зашкаливающий уровень крутости.</p>
+    </section>
+
+    <!-- ТЕСТ УМА -->
+    <section id="quiz-sec">
+        <h2>🧐 Тест: Молодежь или Уже Всё?</h2>
+        <div class="container">
+            <div class="quiz-container" id="quizBox">
+                <!-- Вопросы будут тут -->
+            </div>
+            <p id="quizResult" style="font-size: 2rem; color: var(--accent); font-weight: bold; margin-top: 20px; display: none;"></p>
+        </div>
+    </section>
+
+    <!-- ГЕНЕРАТОР ОТМАЗОК -->
+    <section style="text-align: center;">
+        <h2>Генератор Мудрых Мыслей</h2>
+        <div id="jokeDisplay" style="font-size: 1.5rem; margin: 20px; min-height: 80px; color: var(--primary);">
+            "Нажми кнопку, чтобы узнать правду..."
+        </div>
+        <button class="btn" onclick="tellJoke()">🎲 ЖМЯК</button>
+    </section>
+
+    <footer>
+        <p>Сайт разработан главным хакером семьи:</p>
+        <p class="creator">😎 NIKITA PRODUCTION (13 y.o.) 😎</p>
+        <p>Лицензия: Бесплатно за вкусный торт.</p>
+    </footer>
+
+    <script>
+        // ЛОГИКА МУЗЫКИ
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicToggleBtn');
+            
+            if (music.paused) {
+                music.play();
+                btn.innerText = "⏸ ПАУЗА (СЛИШКОМ ГРОМКО?)";
+                btn.style.background = "linear-gradient(45deg, #ff0000, #ff9900)";
+            } else {
+                music.pause();
+                btn.innerText = "🎵 ВРУБИТЬ МУЗОН";
+                btn.style.background = "linear-gradient(45deg, #00ffcc, #3333ff)";
+            }
+        }
+
+        // ЛОГИКА ТЕСТА
+        const questions = [
+            {
+                q: "Что такое 'Кринж'?",
+                a: ["Тип французской булочки", "Когда очень стыдно за кого-то", "Название таблеток от спины"],
+                correct: 1
+            },
+            {
+                q: "Где лежат твои очки?",
+                a: ["На носу", "В холодильнике", "Я их не ношу, я просто щурюсь"],
+                correct: 0
+            },
+            {
+                q: "Кто такой 'Краш'?",
+                a: ["Тот, кто нравится", "Звук разбитой вазы", "Персонаж из 'Смешариков'"],
+                correct: 0
+            },
+            {
+                q: "В 61 год главное — это...",
+                a: ["Спасти мир", "Не забыть, зачем зашла на кухню", "Стать блогером"],
+                correct: 1
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function renderQuiz() {
+            const box = document.getElementById('quizBox');
+            if (currentQ >= questions.length) {
+                box.style.display = 'none';
+                const res = document.getElementById('quizResult');
+                res.style.display = 'block';
+                if (score === questions.length) {
+                    res.innerHTML = "🏆 РЕЗУЛЬТАТ: <br>ТЫ СУПЕР-АГЕНТ 007!<br>(Молодая, Дерзкая, Современная)";
+                } else if (score > 1) {
+                    res.innerHTML = "🥈 РЕЗУЛЬТАТ: <br>Нормально! Еще разбираешься в жизни!";
+                } else {
+                    res.innerHTML = "🥉 РЕЗУЛЬТАТ: <br>Ну... Зато у тебя богатый внутренний мир!";
+                }
+                launchConfetti();
+                return;
+            }
+
+            const q = questions[currentQ];
+            let html = `<div class="question">${q.q}</div><div class="quiz-options">`;
+            q.a.forEach((opt, index) => {
+                html += `<button class="btn" onclick="checkAnswer(${index})">${opt}</button>`;
+            });
+            html += `</div><p style="font-size: 0.8rem; color: #666;">Вопрос ${currentQ + 1} из ${questions.length}</p>`;
+            box.innerHTML = html;
+        }
+
+        function checkAnswer(index) {
+            if (index === questions[currentQ].correct) {
+                alert("✅ ПРАВИЛЬНО! (Никита одобряет)");
+                score++;
+            } else {
+                alert("❌ МИМО! Ну ничего, бывает.");
+            }
+            currentQ++;
+            renderQuiz();
+        }
+
+        // ПРИКОЛЫ
+        const jokes = [
+            "В 61 год можно делать всё, что угодно. Но медленно.",
+            "Никита просил передать, что ты лучшая!",
+            "Твой возраст — это просто количество оборотов вокруг Солнца. Ты космонавт!",
+            "Улыбайся, пока есть зубы! (Шучу, сейчас делают отличные протезы)",
+            "Система перегрелась от твоей красоты. Остынь немного."
+        ];
+
+        function tellJoke() {
+            const display = document.getElementById('jokeDisplay');
+            const rand = Math.floor(Math.random() * jokes.length);
+            display.innerText = jokes[rand];
+        }
+
+        function scrollToVideo() { document.getElementById('video-sec').scrollIntoView({behavior: 'smooth'}); }
+        function scrollToQuiz() { document.getElementById('quiz-sec').scrollIntoView({behavior: 'smooth'}); renderQuiz(); }
+
+        // КОНФЕТТИ
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+
+        function launchConfetti() {
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: Math.random()*canvas.width, 
+                    y: -20, 
+                    color: `hsl(${Math.random()*360}, 100%, 50%)`,
+                    speed: Math.random()*5+2
+                });
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.y += p.speed;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 10, 10);
+                if(p.y > canvas.height) particles.splice(i, 1);
+            });
+            if(particles.length > 0) requestAnimationFrame(animate);
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
